@@ -98,7 +98,6 @@ export default {
   methods: {
     onSendForm(value) {
       this.items.push({ ...value });
-      console.log(this.items);
       this.values = {
         firstname: "",
         lastname: "",

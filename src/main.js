@@ -11,8 +11,7 @@ Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueForm, {
   validators: {
-    passwd: (value, attrValue, vnode) => {
-      console.log(attrValue, vnode);
+    passwd: (value) => {
       return /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(
         value
       );
