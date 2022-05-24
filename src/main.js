@@ -9,7 +9,16 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
-Vue.use(VueForm);
+Vue.use(VueForm, {
+  validators: {
+    passwd: (value, attrValue, vnode) => {
+      console.log(attrValue, vnode);
+      return /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(
+        value
+      );
+    },
+  },
+});
 
 Vue.config.productionTip = false;
 

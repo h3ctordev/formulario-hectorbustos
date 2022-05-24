@@ -3,27 +3,33 @@
     <b-container class="my-5">
       <h2 class="my-5 text-center">Desafio Formulario - Héctor Bustos</h2>
       <v-form :fields="fields" :values="values" @send-form="onSendForm" />
+      <v-data-table :fields="fields" :items="items" />
     </b-container>
   </div>
 </template>
 
 <script>
 import VForm from "@/components/VForm.vue";
+import VDataTable from "@/components/VDataTable.vue";
 export default {
   name: "App",
   components: {
     VForm,
+    VDataTable,
   },
   data() {
     return {
+      items: [],
       values: {
         firstname: "",
         lastname: "",
-        years: "",
+        dob: "",
+        email: "",
+        password: "",
       },
       fields: [
         {
-          name: "firstname",
+          key: "firstname",
           label: "Nombre",
           required: true,
           minlength: 2,
@@ -36,7 +42,7 @@ export default {
           },
         },
         {
-          name: "lastname",
+          key: "lastname",
           label: "Apellido",
           required: true,
           messages: {
@@ -47,29 +53,52 @@ export default {
           },
         },
         {
-          name: "dob",
+          key: "email",
+          label: "Email",
+          required: true,
+          type: "email",
+          messages: {
+            success: "Correcto!",
+            errors: {
+              required: "El Mail es requerido",
+              email: "El Mail no es valido",
+            },
+          },
+        },
+        {
+          key: "password",
+          label: "Clave",
+          required: true,
+          type: "password",
+          passwd: true,
+          messages: {
+            success: "Correcto!",
+            errors: {
+              required: "La clave es requerida",
+              passwd:
+                "La clave debe teenr almenos 8 caracteres, mayusculas, minusculas y un caracteres especial",
+            },
+          },
+        },
+        {
+          key: "dob",
           label: "Fecha de Nacimiento",
           required: true,
           type: "date",
-          min: new Date(),
-          max: new Date("1940-01-01"),
           messages: {
             success: "Correcto!",
             errors: {
               required: "La fecha es requerida",
-              max: "La fecha no puede ser mayor a hoy",
-              min: "La fecha no puede ser menor a 1940",
             },
           },
         },
       ],
-      rows: [],
     };
   },
   methods: {
     onSendForm(value) {
-      console.table(value);
-      this.rows.push({ ...value });
+      this.items.push({ ...value });
+      console.log(this.items);
       this.values = {
         firstname: "",
         lastname: "",

@@ -1,10 +1,10 @@
 <template>
   <vue-form :state="formstate" @submit.prevent="onSubmit">
     <b-row align-h="center">
-      <b-col cols="9" v-for="field in fields" :key="field.name">
+      <b-col cols="9" v-for="field in fields" :key="field.key">
         <validate
           class="form-group"
-          :class="fieldClassName(formstate[field.name])"
+          :class="fieldClassName(formstate[field.key])"
         >
           <label>
             {{ field.label }}
@@ -13,15 +13,16 @@
             </span>
           </label>
           <input
-            v-model.lazy="models[field.name]"
+            v-model.lazy="models[field.key]"
             :required="field.required"
-            :name="field.name"
+            :name="field.key"
             :type="field.type || 'text'"
             class="form-control"
             :min="field.min"
             :max="field.max"
+            :passwd="field.passwd"
             :minlength="field.minlength"
-            :class="fieldClassName(formstate[field.name])"
+            :class="fieldClassName(formstate[field.key])"
           />
           <field-messages
             class="form-control-feedback"
@@ -34,18 +35,17 @@
             <small class="text-danger font-weight-bold" slot="required">
               {{ field.messages.errors.required }}
             </small>
-            <small class="text-danger font-weight-bold" slot="min">
-              {{ field.messages.errors.min }}
-            </small>
-            <small class="text-danger font-weight-bold" slot="max">
-              {{ field.messages.errors.max }}
+            <small class="text-danger font-weight-bold" slot="email">
+              {{ field.messages.errors.email }}
             </small>
             <small class="text-danger font-weight-bold" slot="minlength">
               {{ field.messages.errors.minlength }}
             </small>
+            <small class="text-danger font-weight-bold" slot="passwd">
+              {{ field.messages.errors.passwd }}
+            </small>
           </field-messages>
         </validate>
-        <form></form>
       </b-col>
     </b-row>
     <div class="py-2 text-center">
@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("Is valid? : ", this.formstate.$valid);
       if (this.formstate.$valid) {
         this.formstate._reset();
         this.$emit("send-form", this.models);
@@ -86,7 +85,6 @@ export default {
       if (!field) {
         return null;
       }
-      console.log(field);
       if ((field.$touched || field.$submitted) && field.$valid) {
         return "is-valid";
       }
