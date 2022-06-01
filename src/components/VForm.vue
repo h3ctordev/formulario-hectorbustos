@@ -67,6 +67,9 @@ export default {
       require: true,
     },
   },
+  mounted() {
+    this.models = { ...this.values };
+  },
   data() {
     return {
       formstate: {},
